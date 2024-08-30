@@ -1,16 +1,23 @@
 <div class="container mx-auto p-6">
   <h1 class="text-2xl font-bold mb-4">Pokémon List</h1>
 
-  <!-- Form to Add Pokémon -->
   <form (ngSubmit)="addPokemon()" class="mb-4">
     <input
       type="text"
       [(ngModel)]="newPokemonName"
       name="pokemonName"
       placeholder="Add a new Pokémon"
-      class="px-4 py-2 border border-gray-300 rounded-lg w-full"
+      class="px-4 py-2 border border-gray-300 rounded-lg w-full mb-2"
       required
     />
+    <textarea
+      [(ngModel)]="newPokemonDescription"
+      name="pokemonDescription"
+      placeholder="Add a description"
+      class="px-4 py-2 border border-gray-300 rounded-lg w-full mb-2"
+      rows="3"
+      required
+    ></textarea>
     <button
       type="submit"
       class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -19,7 +26,6 @@
     </button>
   </form>
 
-  <!-- Pokémon Table -->
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
       <thead class="bg-gray-200">
@@ -57,5 +63,15 @@
       </tbody>
     </table>
     <p *ngIf="errorMessage" class="mt-4 text-red-500">{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="selectedPokemon" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <h2 class="text-xl font-bold mb-4">{{ selectedPokemon.name }}</h2>
+      <p class="mb-4">{{ selectedPokemon.description }}</p>
+      <button (click)="closeDialog()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Close
+      </button>
+    </div>
   </div>
 </div>

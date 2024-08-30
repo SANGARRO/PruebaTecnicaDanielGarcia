@@ -22,9 +22,11 @@ import { catchError, of } from 'rxjs';
 })
 export class TablasComponent {
   newPokemonName: string = '';
+  newPokemonDescription: string = '';
   pokemons: any[] = [];
   completedPokemons: Set<string> = new Set<string>();
   errorMessage: string = '';
+  selectedPokemon: any = null;
 
   constructor(private apiService: ConsultasService) {}
 
@@ -38,25 +40,26 @@ export class TablasComponent {
       .pipe(
         catchError((error) => {
           this.errorMessage = 'Failed to load Pokémon data.';
-          return of({ results: [] }); // Return an empty array on error
+          return of({ results: [] });
         })
       )
       .subscribe((data) => {
         this.pokemons = data.results.map((pokemon: any) => ({
           ...pokemon,
-          url: pokemon.url, // Ensure URL is included
+          url: pokemon.url,
         }));
       });
   }
 
   addPokemon(): void {
-    if (this.newPokemonName.trim()) {
-      // Simulate adding a Pokémon by pushing it to the list
+    if (this.newPokemonName.trim() && this.newPokemonDescription.trim()) {
       this.pokemons.push({
         name: this.newPokemonName,
         url: `https://pokeapi.co/api/v2/pokemon/${this.newPokemonName.toLowerCase()}`,
+        description: this.newPokemonDescription,
       });
       this.newPokemonName = '';
+      this.newPokemonDescription = '';
     }
   }
 
@@ -73,6 +76,13 @@ export class TablasComponent {
   }
 
   investigar(url: string): void {
-    console.log(url);
+    const selectedPokemon = this.pokemons.find(pokemon => pokemon.url === url);
+    if (selectedPokemon) {
+      this.selectedPokemon = selectedPokemon;
+    }
+  }
+
+  closeDialog(): void {
+    this.selectedPokemon = null;
   }
 }
