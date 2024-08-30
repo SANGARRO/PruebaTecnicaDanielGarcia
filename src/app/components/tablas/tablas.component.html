@@ -88,6 +88,12 @@
               Search
             </button>
             <button
+              (click)="editPokemon(pokemon)"
+              class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mr-2"
+            >
+              Edit
+            </button>
+            <button
               (click)="deletePokemon(pokemon.url)"
               class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mr-2"
             >
@@ -120,6 +126,54 @@
       >
         Close
       </button>
+    </div>
+  </div>
+
+  <!-- Edit Pokémon Dialog -->
+  <div
+    *ngIf="editingPokemon"
+    class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <h2 class="text-xl font-bold mb-4">Edit {{ editingPokemon.name }}</h2>
+      <form (ngSubmit)="updatePokemon()" #editForm="ngForm">
+        <textarea
+          [(ngModel)]="editingPokemon.description"
+          name="editDescription"
+          placeholder="Edit description"
+          class="px-4 py-2 border border-gray-300 rounded-lg w-full mb-2"
+          rows="3"
+          required
+        ></textarea>
+        <div class="mb-4">
+          <label for="editType" class="block mb-2">Type:</label>
+          <select
+            name="editType"
+            [(ngModel)]="editingPokemon.type"
+            id="editType"
+            class="px-4 py-2 border border-gray-300 rounded-lg w-full"
+          >
+            <option value="">Select a type</option>
+            <option value="1">Tierra</option>
+            <option value="2">Agua</option>
+            <option value="3">Fuego</option>
+            <option value="unknown">Tipo Desconocido</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Update
+        </button>
+        <button
+          (click)="cancelEdit()"
+          type="button"
+          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2"
+        >
+          Cancel
+        </button>
+      </form>
     </div>
   </div>
 </div>

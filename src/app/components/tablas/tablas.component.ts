@@ -28,6 +28,7 @@ export class TablasComponent {
   completedPokemons: Set<string> = new Set<string>();
   errorMessage: string = '';
   selectedPokemon: any = null;
+  editingPokemon: any = null;
   Pokemonfilter: string = '';
   filteredPokemons: any[] = [];
 
@@ -96,6 +97,27 @@ export class TablasComponent {
     }
   }
 
+  editPokemon(pokemon: any): void {
+    this.editingPokemon = { ...pokemon };
+  }
+
+  updatePokemon(): void {
+    if (this.editingPokemon) {
+      const index = this.pokemons.findIndex(
+        (pokemon) => pokemon.url === this.editingPokemon.url
+      );
+      if (index !== -1) {
+        this.pokemons[index] = this.editingPokemon;
+        this.filterPokemons();
+      }
+      this.cancelEdit();
+    }
+  }
+
+  cancelEdit(): void {
+    this.editingPokemon = null;
+  }
+
   closeDialog(): void {
     this.selectedPokemon = null;
   }
@@ -104,12 +126,10 @@ export class TablasComponent {
     if (this.Pokemonfilter === '') {
       this.filteredPokemons = this.pokemons;
     } else if (this.Pokemonfilter === 'unknown') {
-      // Filtra Pokémon con tipo no definido
       this.filteredPokemons = this.pokemons.filter(
         (pokemon) => !pokemon.type || pokemon.type === 'unknown'
       );
     } else {
-      // Filtra por tipo específico
       this.filteredPokemons = this.pokemons.filter(
         (pokemon) => pokemon.type === this.Pokemonfilter
       );
