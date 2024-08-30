@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,24 @@ export class ConsultasService {
 
   constructor(private http: HttpClient) {}
 
-  getItems(param: any): Observable<any> {
-    return this.http.get(this.apiUrl + param);
+  getItems(param: string): Observable<any> {
+    return this.http
+      .get(this.apiUrl + param)
+      .pipe(catchError(this.handleError));
   }
-  getOne(param: any): Observable<any> {
-    return this.http.get(param);
+
+  getOne(param: string): Observable<any> {
+    return this.http.get(param).pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: any) {
+    console.error(' error :', error);
+    let errorMessage = ' error .';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Error ${error.status}: ${error.message}`;
+    }
+    return throwError(errorMessage);
   }
 }
