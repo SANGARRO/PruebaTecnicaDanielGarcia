@@ -1,0 +1,61 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4">Pokémon List</h1>
+
+  <!-- Form to Add Pokémon -->
+  <form (ngSubmit)="addPokemon()" class="mb-4">
+    <input
+      type="text"
+      [(ngModel)]="newPokemonName"
+      name="pokemonName"
+      placeholder="Add a new Pokémon"
+      class="px-4 py-2 border border-gray-300 rounded-lg w-full"
+      required
+    />
+    <button
+      type="submit"
+      class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+    >
+      Add Pokémon
+    </button>
+  </form>
+
+  <!-- Pokémon Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2 border-b text-left">Pokémon</th>
+          <th class="px-4 py-2 border-b text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pokemon of pokemons">
+          <td [ngClass]="{ 'text-green-500': completedPokemons.has(pokemon.url), 'px-4 py-2 border-b': true }">
+            {{ pokemon.name }}
+          </td>
+          <td class="px-4 py-2 border-b">
+            <button
+              (click)="investigar(pokemon.url)"
+              class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2"
+            >
+              Search
+            </button>
+            <button
+              (click)="deletePokemon(pokemon.url)"
+              class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mr-2"
+            >
+              Delete
+            </button>
+            <button
+              (click)="markCompleted(pokemon.url)"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Complete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="errorMessage" class="mt-4 text-red-500">{{ errorMessage }}</p>
+  </div>
+</div>
