@@ -1,6 +1,7 @@
 <div class="container mx-auto p-6">
   <h1 class="text-2xl font-bold mb-4">Pokémon List</h1>
 
+  <!-- Form to Add Pokémon -->
   <form (ngSubmit)="addPokemon()" class="mb-4">
     <input
       type="text"
@@ -18,6 +19,20 @@
       rows="3"
       required
     ></textarea>
+    <div class="mb-4">
+      <label for="pokemonType" class="block mb-2">Type:</label>
+      <select
+        name="pokemonType"
+        [(ngModel)]="newPokemonType"
+        id="pokemonType"
+        class="px-4 py-2 border border-gray-300 rounded-lg w-full"
+      >
+        <option value="">Select a type</option>
+        <option value="1">Tierra</option>
+        <option value="2">Agua</option>
+        <option value="3">Fuego</option>
+      </select>
+    </div>
     <button
       type="submit"
       class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -26,6 +41,25 @@
     </button>
   </form>
 
+  <!-- Pokémon Filter -->
+  <div class="mb-4">
+    <label for="filter" class="block mb-2">Filter by Type:</label>
+    <select
+      name="pokemonFilter"
+      (change)="filterPokemons()"
+      [(ngModel)]="Pokemonfilter"
+      id="filter"
+      class="px-4 py-2 border border-gray-300 rounded-lg w-full"
+    >
+      <option value="">Show All</option>
+      <option value="1">Tierra</option>
+      <option value="2">Agua</option>
+      <option value="3">Fuego</option>
+      <option value="unknown">Tipo Desconocido</option>
+    </select>
+  </div>
+
+  <!-- Pokémon Table -->
   <div class="overflow-x-auto">
     <table
       class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md"
@@ -37,7 +71,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let pokemon of pokemons">
+        <tr *ngFor="let pokemon of filteredPokemons">
           <td
             [ngClass]="{
               'text-green-500': completedPokemons.has(pokemon.url),
@@ -72,6 +106,7 @@
     <p *ngIf="errorMessage" class="mt-4 text-red-500">{{ errorMessage }}</p>
   </div>
 
+  <!-- Pokémon Description Dialog -->
   <div
     *ngIf="selectedPokemon"
     class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center"
