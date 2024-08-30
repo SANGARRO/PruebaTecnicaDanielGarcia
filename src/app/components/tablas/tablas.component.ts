@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConsultasService } from '../../services/consultas.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
@@ -33,17 +33,20 @@ export class TablasComponent {
   }
 
   loadPokemons(): void {
-    this.apiService.getItems('pokemon').pipe(
-      catchError(error => {
-        this.errorMessage = 'Failed to load Pokémon data.';
-        return of({ results: [] }); // Return an empty array on error
-      })
-    ).subscribe((data) => {
-      this.pokemons = data.results.map((pokemon: any) => ({
-        ...pokemon,
-        url: pokemon.url // Ensure URL is included
-      }));
-    });
+    this.apiService
+      .getItems('pokemon')
+      .pipe(
+        catchError((error) => {
+          this.errorMessage = 'Failed to load Pokémon data.';
+          return of({ results: [] }); // Return an empty array on error
+        })
+      )
+      .subscribe((data) => {
+        this.pokemons = data.results.map((pokemon: any) => ({
+          ...pokemon,
+          url: pokemon.url, // Ensure URL is included
+        }));
+      });
   }
 
   addPokemon(): void {
@@ -51,14 +54,14 @@ export class TablasComponent {
       // Simulate adding a Pokémon by pushing it to the list
       this.pokemons.push({
         name: this.newPokemonName,
-        url: `https://pokeapi.co/api/v2/pokemon/${this.newPokemonName.toLowerCase()}`
+        url: `https://pokeapi.co/api/v2/pokemon/${this.newPokemonName.toLowerCase()}`,
       });
       this.newPokemonName = '';
     }
   }
 
   deletePokemon(url: string): void {
-    this.pokemons = this.pokemons.filter(pokemon => pokemon.url !== url);
+    this.pokemons = this.pokemons.filter((pokemon) => pokemon.url !== url);
   }
 
   markCompleted(url: string): void {
