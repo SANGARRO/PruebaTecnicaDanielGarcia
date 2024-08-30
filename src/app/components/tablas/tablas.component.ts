@@ -76,7 +76,9 @@ export class TablasComponent {
   }
 
   investigar(url: string): void {
-    const selectedPokemon = this.pokemons.find(pokemon => pokemon.url === url);
+    const selectedPokemon = this.pokemons.find(
+      (pokemon) => pokemon.url === url
+    );
     if (selectedPokemon) {
       this.selectedPokemon = selectedPokemon;
     }
